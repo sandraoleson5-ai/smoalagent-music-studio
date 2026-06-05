@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+smolagents
+huggingface_hub
+python-dotenv
+pydub
+librosa
+numpy
+soundfile
+requests
+pillow
+# For social: tweepy, instagrapi, etc. (API keys needed)

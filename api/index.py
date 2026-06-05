@@ -1,12 +1,12 @@
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 from app.agent import create_music_agent
 
 load_dotenv()
 
-app = FastAPI(title="Smoalagent Music AI Studio")
+app = FastAPI(title="Smoalagent Music Studio")
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,23 +17,16 @@ app.add_middleware(
 )
 
 @app.get("/")
-def root():
-    return {"message": "Smoalagent Music AI Studio Ready 🎵", "status": "production"}
+async def root():
+    return {"message": "🎵 Smoalagent Music Studio Live! AI Cover Studio, Autotune, Lyrics & More Ready."}
 
 @app.post("/run")
-async def run_agent(query: str = Form(...)):
-    agent = create_music_agent()
-    result = agent.run(query)
-    return {"result": result}
+async def run_agent(query: str):
+    try:
+        agent = create_music_agent()
+        result = agent.run(query)
+        return {"result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-# Audio upload endpoint example
-@app.post("/upload-audio")
-async def upload_audio(file: UploadFile = File(...), task: str = Form(...)):
-    contents = await file.read()
-    temp_path = f"/tmp/{file.filename}"
-    with open(temp_path, "wb") as f:
-        f.write(contents)
-    # Call agent or tool with temp_path
-    agent = create_music_agent()
-    result = agent.run(f"Perform {task} on audio: {temp_path}")
-    return {"result": result, "file": file.filename}
+# TODO: Add /upload-audio endpoint for file processing

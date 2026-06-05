@@ -1,5 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 smolagents
 huggingface_hub
 python-dotenv
@@ -9,4 +9,3 @@ numpy
 soundfile
 requests
 pillow
-# For social: tweepy, instagrapi, etc. (API keys needed)
